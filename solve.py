@@ -1,5 +1,5 @@
 
-
+# SOLUTION: [d, f, a, c, g, b, e]
 class Nut:
     def __init__(self, numbers, name):
         """Wrapper for Nut object.
@@ -29,6 +29,10 @@ class Nut:
         self.edges_set = frozenset(edges)
 
     def __getitem__(self, item):
+        if item >= len(self.numbers):
+            old_item = item
+            item = old_item % len(self.numbers)
+            print(f'>> Warning: converting looking index {old_item} to {item}')
         return self.numbers[item]
 
     def __gt__(self, other):
@@ -167,3 +171,55 @@ print(f'Found {len(possible_starting_pairs)} possible starting pairs.')
 print('Possible starting paris:')
 for pair in possible_starting_pairs:
     print(f'\tPair: ({pair[0].name}, {pair[1].name}), Left: {pair[2]}, Right: {pair[3]}')
+
+
+# Flesh out starting pairs.
+def trace_path(center_nut, second_nut, center_index, available_nuts):
+    """
+
+    Args:
+        center_nut: Nut
+        second_nut: Nut
+        center_index: int
+        available_nuts: set(Nut)
+
+    Returns:
+        bool: path match
+
+    """
+    print('')
+    print(f'Center nut {center_nut}, Second nut {second_nut}.')
+    center_value = center_nut[center_index]
+    second_index = second_nut.numbers.index(center_value)
+    print(f'Center index {center_index}, Center value {center_value}, Second index: {second_index}')
+    print(f'Available nuts: {available_nuts}')
+
+    left_edge, right_edge = get_open_edges(
+        center_nut, center_index, second_nut, second_index)
+
+    # Reached end of path
+    if not available_nuts:
+        print('')
+        print('*** Reached end with success!!!! ***')
+        print('')
+        return True
+
+    for right_nut in available_nuts:
+        if right_edge in right_nut.edges_set:
+            print(f'Right edge {right_edge} found for Nut {right_nut}.')
+            print(f'Recursion!')
+            new_available_nuts = sorted(set(available_nuts) - {right_nut})
+            return trace_path(center_nut, right_nut, center_index + 1, new_available_nuts)
+
+    print('No more matches!')
+    return False
+
+
+for cn in all_nuts_list:
+    print('')
+    print(f'# Trying Center nut {cn}')
+    for sn in sorted(set(all_nuts_list) - {cn}):
+        print('')
+        print(f'## Trying second nut {sn}')
+        available = sorted(set(all_nuts_list) - {cn, sn})
+        trace_path(cn, sn, 0, available)
