@@ -4,7 +4,13 @@ A solution to the puzzle game [Drive Ya Nuts](https://www.amazon.com/Vintage-Mil
 
 Description: "Scramble the nuts, then place them back, so that all the touching sides have matching numbers."
 
-Example: ![Drive Ya Nuts game.](drive_ya_nuts.jpg?raw=true "Drive Ya Nuts game.")
+Puzzle:
+
+![Drive Ya Nuts puzzle game.](before.jpg?raw=true "Drive Ya Nuts puzzle game.")
+
+Soltuion:
+
+![Solution.](after.jpg?raw=true "Solution.")
 
 # Usage
 
